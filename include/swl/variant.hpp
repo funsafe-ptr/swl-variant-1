@@ -60,6 +60,10 @@ SOFTWARE.
 #define SWL_FWD(x) static_cast<decltype(x)&&>(x)
 #define SWL_MOV(x) static_cast< std::remove_reference_t<decltype(x)>&& >(x)
 
+#if !defined(__cpp_exceptions) || __cpp_exceptions < 199711L
+	#define SWL_NO_EXCEPTIONS
+#endif
+
 #ifdef SWL_VARIANT_DEBUG
 	#include <iostream>
 	#define DebugAssert(X) if (not (X)) std::cout << "Variant : assertion failed : [" << #X << "] at line : " << __LINE__ << "\n";
@@ -845,6 +849,7 @@ constexpr auto&& unsafe_get(Var&& var) noexcept {
 #undef DebugAssert
 #undef SWL_FWD
 #undef SWL_MOV
+#undef SWL_NO_EXCEPTIONS
 
 #ifdef SWL_VARIANT_NO_CONSTEXPR_EMPLACE
 	#undef SWL_VARIANT_NO_CONSTEXPR_EMPLACE
